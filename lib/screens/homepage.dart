@@ -1,43 +1,57 @@
+import 'package:Form_Validation/screens/homeview_model.dart';
+import 'package:Form_Validation/widgets/button.dart';
+import 'package:Form_Validation/widgets/loginbutton.dart';
 import 'package:flutter/material.dart';
-import 'package:food_ordering_app/widgets/button.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-  });
 
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  HomeViewModel validation = HomeViewModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Form Validation"),
         centerTitle: true,
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
         child: Column(
           children: [
-            CustomInputFeild(label: "Email"),
+            CustomInputFeild(
+              label: "Email",
+              onChanged: (value) {
+                validation.EmailValidate(value);
+                setState(() {});
+              },
+              errorMsg: validation.email.error,
+            ),
             const SizedBox(height: 20),
             CustomInputFeild(
               label: "Password",
               isPass: true,
               type: TextInputType.text,
+              onChanged: (value) {
+                validation.PasswordValidate(value);
+                setState(() {});
+              },
+              errorMsg: validation.password.error,
             ),
             const SizedBox(
               height: 30,
             ),
-            SizedBox(
-                height: 60,
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: ElevatedButton(
-                    onPressed: () {}, child: Text("Login",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      )
-                    ),
-                    ),),
+            Loginbutton(
+              onPressed: validation.isValid ? () {} : null,
+            ),
           ],
         ),
       ),
